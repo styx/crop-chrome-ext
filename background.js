@@ -32,7 +32,6 @@ function getImg(url) {
 
 function sendMsg(imgData) {
   let x = imgData.split(',')[1].toString();
-  console.log(x.length);
   chrome.runtime.sendNativeMessage(
     'by.styx.run', { data: x, bin: 'pinta' }
   );

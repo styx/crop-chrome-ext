@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "Open with Pinta",
-  "short_name": "Open with Pinta",
-  "description": "Open images with Pinta via right mouse click on image",
-  "version": "0.2",
+  "name": "Crop and Google",
+  "short_name": "Crop and Google",
+  "description": "Open images in simple editor and Google for a crop",
+  "version": "0.1",
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [ "contextMenus", "storage", "tabs", "nativeMessaging", "<all_urls>"],
   "minimum_chrome_version": "21",
@@ -14,6 +14,6 @@
   },
   "background": {
     "persistent": true,
-    "scripts": ["main.js"]
+    "scripts": ["background.js"]
   }
 }
