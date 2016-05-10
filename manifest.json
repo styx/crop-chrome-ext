@@ -5,7 +5,13 @@
   "description": "Open images in simple editor and Google for a crop",
   "version": "0.1",
   "content_security_policy": "script-src 'self'; object-src 'self'",
-  "permissions": [ "contextMenus", "storage", "tabs", "nativeMessaging", "<all_urls>"],
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "tabs",
+    "nativeMessaging",
+    "<all_urls>"
+  ],
   "minimum_chrome_version": "21",
   "icons": {
     "16": "icon-xs.png",
