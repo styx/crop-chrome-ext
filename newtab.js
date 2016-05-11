@@ -1,12 +1,12 @@
+const OVERLAY_CANVAS_SHIFT = 20;
+const IMAGE_CANVAS_SHIFT = 150;
+const CANVAS_PADDING = IMAGE_CANVAS_SHIFT - OVERLAY_CANVAS_SHIFT;
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message == 'imgData') {
     fetchImage(request.url);
   }
 });
-
-const OVERLAY_CANVAS_SHIFT = 50;
-const IMAGE_CANVAS_SHIFT = 150;
-const CANVAS_PADDING = IMAGE_CANVAS_SHIFT - OVERLAY_CANVAS_SHIFT;
 
 rect = function() {
   let tool = this;
@@ -34,11 +34,11 @@ rect = function() {
 
     if (final) {
       if (x < CANVAS_PADDING) {
-        w = w - (CANVAS_PADDING - x);
+        w -= CANVAS_PADDING - x;
         x = CANVAS_PADDING;
       }
       if (y < CANVAS_PADDING) {
-        h = h - (CANVAS_PADDING - y);
+        h -= CANVAS_PADDING - y;
         y = CANVAS_PADDING;
       }
       if (x + w > CANVAS_PADDING + width) {
@@ -87,6 +87,7 @@ let tool = new rect();
 let selectionX, selectionY, selectionW, selectionH = 0;
 let width = 0;
 let height = 0;
+ctxOverlay.strokeStyle="#FF0000";
 
 function fetchImage(url) {
   let imgTag = document.createElement('img');
@@ -130,16 +131,26 @@ function initDrawer() {
   document.body.appendChild(canvasOverlay);
 }
 
+function upload(base64Img) {
+  let img = base64Img.substring(base64Img.indexOf(',') + 1)
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/\./g, '=');
+  img = '<html><head><title>Google Image</title></head><body><form id="f" method="POST" action="https://www.google.com/searchbyimage/upload" enctype="multipart/form-data"><input type="hidden" name="image_content" value="' + img + '"><input type="hidden" name="filename" value=""><input type="hidden" name="image_url" value=""><input type="hidden" name="sbisrc" value="cr_1_5_1"></form><script>document.getElementById("f").submit();</script></body></html>';
+  let f = 'data:text/html;charset=utf-8;base64,' + window.btoa(img);
+
+  chrome.tabs.create({'url': f, 'selected': true});
+}
+
 function google() {
-  console.log(selectionX, selectionY, selectionW, selectionH);
-  return;
+  selectionX -= CANVAS_PADDING;
+  selectionY -= CANVAS_PADDING;
 
-  // TODO
-  let cropWidth = 0;
-  let cropHeight = 0;
+  canvasCrop.width = selectionW;
+  canvasCrop.height = selectionH;
 
-  canvasCrop.width = cropWidth;
-  canvasCrop.height = cropHeight;
+  ctxCrop.drawImage(
+    canvas, selectionX, selectionY, selectionW, selectionH, // source
+    0, 0, selectionW, selectionH // dest
+  );
 
   let base64Img = canvasCrop.toDataURL('image/png', 1);
   upload(base64Img);
