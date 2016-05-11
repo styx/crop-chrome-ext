@@ -1,9 +1,8 @@
 function msgReceived(info, tab) {
   chrome.tabs.create({'url': chrome.extension.getURL('newtab.html'), 'selected': true}, function(tab) {
-    console.log('In create: ', tab);
-    chrome.tabs.getSelected(null, function(tab) {
+    setTimeout(()=>{
       chrome.tabs.sendMessage(tab.id, {message: 'imgData', url: info.srcUrl});
-    });
+    }, 500);
   });
 }
 
