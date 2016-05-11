@@ -1,5 +1,10 @@
-# Open with pinta
+# Crop for Google Chrome
 
-Adds context menu to `Chrome` browser to open an image in `Pinta` image editor.
+This extension allows you to search for a part of image through Google images.
+New context menu will be added named `Crop` for images. If you choose this menu
+new tab will be opened. You should select a region with a mouse like in any
+image editor then press `Q` key or `Search` button. Search will be opened in
+new tab. Then you can repeat selection and search.
 
-[Pinta project](https://pinta-project.com/)
+This extension debugged only in success manner and flow discribed earlier,
+so be ready for bugs if you'll go your own way (:
