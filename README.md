@@ -8,3 +8,8 @@ new tab. Then you can repeat selection and search.
 
 This extension debugged only in success manner and flow discribed earlier,
 so be ready for bugs if you'll go your own way (:
+
+## Instalation notes
+ * Follow the url chrome://extensions/ and Drag&Drop `crop-chrome-ext-master.crx` to the page
+ or
+ * Follow the url chrome://extensions/, turn on `Developer mode` if turned off, press `Load unpacked extension` button and select root folder with ext source.
