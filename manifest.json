@@ -7,9 +7,7 @@
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
     "contextMenus",
-    "storage",
     "tabs",
-    "nativeMessaging",
     "<all_urls>"
   ],
   "minimum_chrome_version": "21",
