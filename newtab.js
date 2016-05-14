@@ -52,8 +52,8 @@ rect = function() {
     ctxOverlay.strokeStyle="#FF0000";
     ctxOverlay.strokeRect(x, y, w, h);
 
-    selectionX = x;
-    selectionY = y;
+    selectionX = x - CANVAS_PADDING;
+    selectionY = y - CANVAS_PADDING;
     selectionW = w;
     selectionH = h;
   };
@@ -79,9 +79,11 @@ function ev_canvas(ev) {
 }
 
 let canvas = document.createElement('canvas');
+let canvasHide = document.createElement('canvas');
 let canvasOverlay = document.createElement('canvas');
 let canvasCrop = document.createElement('canvas');
 let ctx = canvas.getContext("2d");
+let ctxHide = canvasHide.getContext("2d");
 let ctxOverlay = canvasOverlay.getContext("2d");
 let ctxCrop = canvasCrop.getContext("2d");
 let tool = new rect();
@@ -96,8 +98,10 @@ function fetchImage(url) {
     height = imgTag.height;
 
     canvas.width = width;
+    canvasHide.width = width;
     canvasOverlay.width = width * 2 + IMAGE_CANVAS_SHIFT;
     canvas.height = height;
+    canvasHide.height = height;
     canvasOverlay.height = height * 2 + IMAGE_CANVAS_SHIFT;
 
     ctx.fillStyle = '#ffffff';
@@ -121,13 +125,15 @@ function setCanvasCSS(canvas, padding, zindex) {
 
 function initDrawer() {
   setCanvasCSS(canvas, IMAGE_CANVAS_SHIFT + 'px', 0);
-  setCanvasCSS(canvasOverlay, OVERLAY_CANVAS_SHIFT + 'px', 1);
+  setCanvasCSS(canvasHide, IMAGE_CANVAS_SHIFT + 'px', 1);
+  setCanvasCSS(canvasOverlay, OVERLAY_CANVAS_SHIFT + 'px', 2);
 
   canvasOverlay.addEventListener('mousedown', ev_canvas, false);
   canvasOverlay.addEventListener('mousemove', ev_canvas, false);
   canvasOverlay.addEventListener('mouseup',   ev_canvas, false);
 
   document.body.appendChild(canvas);
+  document.body.appendChild(canvasHide);
   document.body.appendChild(canvasOverlay);
 }
 
@@ -141,9 +147,6 @@ function upload(base64Img) {
 }
 
 function google() {
-  selectionX -= CANVAS_PADDING;
-  selectionY -= CANVAS_PADDING;
-
   canvasCrop.width = selectionW;
   canvasCrop.height = selectionH;
 
@@ -156,21 +159,49 @@ function google() {
   upload(base64Img);
 }
 
+function show() {
+  ctxHide.clearRect(selectionX, selectionY, selectionW, selectionH);
+}
+
+function hide() {
+  ctxHide.fillStyle = '#000';
+  ctxHide.fillRect(selectionX, selectionY, selectionW, selectionH);
+}
+
 function bindHeader() {
   let button = document.getElementById('search');
   button.onclick = google;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function bindShortCuts() {
   document.body.addEventListener('keypress', (e) => {
-    if (e.keyCode == 1081 ||
-      e.keyCode == 1049 ||
-      e.keyCode == 113 ||
-      e.keyCode == 81) {
+    switch (e.keyCode) {
+      case 1081:
+      case 1049:
+      case 113:
+      case 81:
         google();
+        break;
+      case 1094:
+      case 1062:
+      case 119:
+      case 87:
+        hide();
+        break
+      case 1091:
+      case 1059:
+      case 101:
+      case 69:
+        show();
+        break
+      default:
+        console.log(e.keyCode);
     }
   });
+}
 
+document.addEventListener('DOMContentLoaded', function() {
+  bindShortCuts();
   bindHeader();
   initDrawer();
 });
