@@ -3,7 +3,7 @@
   "name": "Crop and Google",
   "short_name": "Crop and Google",
   "description": "Open images in simple editor and Google for a crop",
-  "version": "0.1",
+  "version": "0.2",
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "permissions": [
     "contextMenus",
